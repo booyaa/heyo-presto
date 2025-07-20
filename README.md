@@ -34,10 +34,26 @@ mprmote rm :some_file_on_remote_fs.py
 
 ## Miscellany tips
 
-Convert your square images into 240x240 px. This assumes they're in the directory
+### Convert your square images into 240x240 px. This assumes they're in the directory
 
 ```sh
 mkdir converted
 ls -tp | xargs -I{} ffmpeg -i {} -vf scale=240:240 "converted/{}"
 mpremote cp converted/. :gallery/
+```
+
+### Create new icons
+
+Source: [pimoroni](https://learn.pimoroni.com/article/getting-started-with-presto#adding-your-own-examples-to-the-launcher)
+
+- Search for [icon](https://fonts.google.com/icons?selected=Material+Symbols+Outlined:piano:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=piano&icon.size=24&icon.color=%23e3e3e3)
+- Select icon
+- Scroll down right panel nav until you see code point
+
+> [!Important]
+> You need to download the materials symbol font from the source repo
+
+```sh
+# Piano codepoint is e521
+python examples-from-others/font2picovector.py --font examples-from-others/MaterialSymbolsOutlined-Regular.ttf --size 40x40 e521
 ```
