@@ -31,3 +31,13 @@ mprmote rm :some_file_on_remote_fs.py
 
 > [!Note]
 > `:` indicates remote file system
+
+## Miscellany tips
+
+Convert your square images into 240x240 px. This assumes they're in the directory
+
+```sh
+mkdir converted
+ls -tp | xargs -I{} ffmpeg -i {} -vf scale=240:240 "converted/{}"
+mpremote cp converted/. :gallery/
+```
