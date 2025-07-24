@@ -1,5 +1,31 @@
 # Heyo Presto
 
+## Scripts
+
+### Presto bridge
+
+code: [presto_bridge.py](./presto_bridge.py)
+
+This is a small flask app to handle sending and receive messages to meshtastic.
+We only send to a specific person (in my case my mobile node).
+
+```sh
+export MESHTASTIC_HOST='1.2.3.4' # IP address of your node
+export MESHTASTIC_DEFAULT_SENDER='!deadbeef' # user id
+flask --debug --app presto_bridge run --port 5050 --host 0.0.0.0                                                
+```
+
+### (WIP) Meshtastic console
+
+code [wip_meshtastic_console.py](./wip_meshtastic_console.py)
+
+This is a Presto app that allows you to send and receive messages from 
+meshtastic. It requires the Presto bridge to work.
+
+Upload it you Presto and change the `HOST_BASE_URL` to match the IP address 
+and URI scheme where your Presto bridge is running on.
+
+## Resources
 - [Presto](https://shop.pimoroni.com/products/presto?variant=54894104019323) (shop link)
 - [Thonny](https://thonny.org/) IDE to easily connect to the presto
 - [mpremote](https://docs.micropython.org/en/latest/reference/mpremote.html) when you're ready to hit the terminal
