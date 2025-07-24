@@ -30,7 +30,7 @@ button_2 = Button(70, 155, BUTTON_WIDTH, BUTTON_HEIGHT)
 button_3 = Button(130, 155, BUTTON_WIDTH, BUTTON_HEIGHT)
 
 feedback_x = 10
-feedback_y = 30
+feedback_y = 35
 
 ###
 hue = 0.90
@@ -71,7 +71,8 @@ while True:
     display.set_pen(BLACK)
 
     # Title text
-    display.text("Buttons Doing Nothing", 2, 7)
+    display.text("1 = Ping / 2 = Messages", 2, 7)
+    display.text("3 = Reset", 2, 20)
 
     # Finding the state of a touch button is much the same as a physical button
     # calling '.is_pressed()' on your button object will return True or False
@@ -117,4 +118,3 @@ while True:
 
     # Finally, we update the screen so we can see our changes!
     presto.update()
-
