@@ -3,6 +3,7 @@
 # DESC Meshtastic Console
 from presto import Presto
 from touch import Button
+import requests
 
 presto = Presto()
 display = presto.display
@@ -48,7 +49,11 @@ while True:
     # calling '.is_pressed()' on your button object will return True or False
     if button_1.is_pressed():
         display.set_pen(GREEN)
-        display.text("You Pressed Button 1!", feedback_x, feedback_y)
+        r = requests.post("http://localhost:5000/send/ping")
+        if r.status_code == 200:
+            display.text("Sent ping!", feedback_x, feedback_y)
+        else: 
+            display.text("Failed to send ping.", feedback_x, feedback_y)
     else:
         display.set_pen(RED)
 
