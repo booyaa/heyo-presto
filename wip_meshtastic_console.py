@@ -3,7 +3,7 @@
 # DESC Meshtastic Console
 from presto import Presto
 from touch import Button
-import requests
+import urequests as requests
 
 presto = Presto()
 display = presto.display
