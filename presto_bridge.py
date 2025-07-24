@@ -8,10 +8,6 @@ meshtastic_default_sender = os.getenv('MESHTASTIC_DEFAULT_SENDER')
 interface = tcp_interface.TCPInterface(hostname=meshtastic_node_host)
 messages = []
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!!!</p>"
-
 @app.route("/send/<message>", methods=['POST'])
 def send_message(message):
     try:
