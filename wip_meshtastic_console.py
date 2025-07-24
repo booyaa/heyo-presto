@@ -58,6 +58,8 @@ except ImportError as e:
     while True:
         show_message(e)
 ####
+
+fired=0
 while True:
 
     # Check for touch changes
@@ -75,11 +77,19 @@ while True:
     # calling '.is_pressed()' on your button object will return True or False
     if button_1.is_pressed():
         display.set_pen(GREEN)
-        r = requests.post("http://localhost:5000/send/ping")
-        if r.status_code == 200:
-            display.text("Sent ping!", feedback_x, feedback_y)
-        else: 
-            display.text("Failed to send ping.", feedback_x, feedback_y)
+        if fired == 1:
+            display.text("Already sent ping!", feedback_x, feedback_y)
+        else:
+            try:
+                r = requests.post("http://192.168.1.205:5050/send/presto+ping")
+                if r.status_code == 200:
+                    display.text("Sent ping!", feedback_x, feedback_y)
+                    fired=1
+                else: 
+                    display.text("Failed to send ping!", feedback_x, feedback_y)
+                    print(f"Non 200 error: {r.text}")
+            except Exception as e:
+                print(f"Error posting: {e}")
     else:
         display.set_pen(RED)
 
@@ -90,6 +100,7 @@ while True:
     if button_2.is_pressed():
         display.set_pen(GREEN)
         display.text("You Pressed Button 2!", feedback_x, feedback_y)
+        fired=0
     else:
         display.set_pen(RED)
 
@@ -98,6 +109,7 @@ while True:
     if button_3.is_pressed():
         display.set_pen(GREEN)
         display.text("You Pressed Button 3!", feedback_x, feedback_y)
+        fired=0
     else:
         display.set_pen(RED)
 
@@ -105,3 +117,4 @@ while True:
 
     # Finally, we update the screen so we can see our changes!
     presto.update()
+
