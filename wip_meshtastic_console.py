@@ -32,6 +32,32 @@ button_3 = Button(130, 155, BUTTON_WIDTH, BUTTON_HEIGHT)
 feedback_x = 10
 feedback_y = 30
 
+###
+hue = 0.90
+BACKGROUND = display.create_pen_hsv(hue, 0.8, 1.0)  # We'll use this one for the background.
+FOREGROUND = display.create_pen_hsv(hue, 0.5, 1.0)  # Slightly lighter for foreground elements.
+TEXT_COLOUR = display.create_pen_hsv(hue, 0.3, 1.0)
+
+def show_message(text):
+    display.set_pen(BACKGROUND)
+    display.clear()
+    display.set_pen(FOREGROUND)
+    display.text(f"{text}", 5, 10, WIDTH, 2)
+    presto.update()
+
+
+# Connect to the network and get time.
+show_message("Connecting...")
+
+try:
+    presto.connect()
+except ValueError as e:
+    while True:
+        show_message(e)
+except ImportError as e:
+    while True:
+        show_message(e)
+####
 while True:
 
     # Check for touch changes
