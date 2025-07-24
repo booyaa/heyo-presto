@@ -5,6 +5,8 @@ from presto import Presto
 from touch import Button
 import urequests as requests
 
+HOST_BASE_URL = 'http://192.168.1.205:5050'
+
 presto = Presto()
 display = presto.display
 WIDTH, HEIGHT = display.get_bounds()
@@ -74,15 +76,22 @@ while True:
     display.text("1 = Ping / 2 = Messages", 2, 7)
     display.text("3 = Reset", 2, 20)
 
+    # 21 characters if full set (1s are narrower)
+    #display.text("0123456789012345678901", 2, 7)    
+    #display.text("poop short message", 2, 20) # 17.5
+    #display.text("This is a test message...", 2, 20) # 19.5
+
+
     # Finding the state of a touch button is much the same as a physical button
     # calling '.is_pressed()' on your button object will return True or False
     if button_1.is_pressed():
         display.set_pen(GREEN)
         if fired == 1:
+            print("Already sent ping, ignoring...")
             display.text("Already sent ping!", feedback_x, feedback_y)
         else:
             try:
-                r = requests.post("http://192.168.1.205:5050/send/presto+ping")
+                r = requests.post(f"{HOST_BASE_URL}/send/presto+ping")
                 if r.status_code == 200:
                     display.text("Sent ping!", feedback_x, feedback_y)
                     fired=1
