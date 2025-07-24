@@ -4,6 +4,7 @@
 from presto import Presto
 from touch import Button
 import urequests as requests
+from time import sleep
 
 HOST_BASE_URL = 'http://192.168.1.205:5050'
 
@@ -61,7 +62,8 @@ except ImportError as e:
         show_message(e)
 ####
 
-fired=0
+sent_fired=0
+read_fired=0
 while True:
 
     # Check for touch changes
@@ -86,44 +88,65 @@ while True:
     # calling '.is_pressed()' on your button object will return True or False
     if button_1.is_pressed():
         display.set_pen(GREEN)
-        if fired == 1:
+        if sent_fired == 1:
             print("Already sent ping, ignoring...")
+            sleep(5)
             display.text("Already sent ping!", feedback_x, feedback_y)
         else:
             try:
                 r = requests.post(f"{HOST_BASE_URL}/send/presto+ping")
                 if r.status_code == 200:
                     display.text("Sent ping!", feedback_x, feedback_y)
-                    fired=1
+                    sleep(5)
+                    sent_fired=1
                 else: 
                     display.text("Failed to send ping!", feedback_x, feedback_y)
                     print(f"Non 200 error: {r.text}")
             except Exception as e:
                 print(f"Error posting: {e}")
+        read_fired=0
     else:
         display.set_pen(RED)
-
     # We've defined our touch Button object but we need a visual representation of it for the user!
     # We can use the '.bounds' property of our Button object to set the X, Y, WIDTH and HEIGHT
     display.rectangle(*button_1.bounds)
 
+    ## read messages is noticably janky, need to fix the on-screen feedback
     if button_2.is_pressed():
         display.set_pen(GREEN)
-        display.text("You Pressed Button 2!", feedback_x, feedback_y)
-        fired=0
+        if read_fired == 1:
+            print("Already read message, ignoring...")
+            display.text("Press reset to read more!", feedback_x, feedback_y)
+            sleep(5)
+        else:
+            try:
+                r = requests.get(f"{HOST_BASE_URL}/get/message")
+                if r.status_code == 200:
+                    message = r.json().get('message')
+                    display.text(message, feedback_x, feedback_y)
+                    print(message)
+                    sleep(5)
+                    read_fired=1
+                else: 
+                    display.text("Failed to read messages!", feedback_x, feedback_y)
+                    sleep(5)
+                    print(f"Non-200 error or empty: {r.text}")
+            except Exception as e:
+                print(f"Error posting: {e}")
+        sent_fired=0
     else:
         display.set_pen(RED)
-
     display.rectangle(*button_2.bounds)
 
     if button_3.is_pressed():
         display.set_pen(GREEN)
-        display.text("You Pressed Button 3!", feedback_x, feedback_y)
-        fired=0
+        display.text("Resetting!", feedback_x, feedback_y)
+        sent_fired=0
+        read_fired=0
     else:
         display.set_pen(RED)
-
     display.rectangle(*button_3.bounds)
 
     # Finally, we update the screen so we can see our changes!
     presto.update()
+
