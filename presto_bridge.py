@@ -13,8 +13,8 @@ messages = []
 @app.route("/status", methods=['GET'])
 def status():
     try:
-        status = interface.showInfo()
-        return {"status": "success", "message": f"interface: {status}\n{messages}"}
+        interface.showInfo()
+        return {"status": "success", "message": f"interface: ok\n{messages}"}
     except Exception as e:
         print(f"Error getting status: {e}")
         return {"status": "error", "message": str(e)}
@@ -69,3 +69,7 @@ def truncate_message(message):
     return message
 
 pub.subscribe(on_receive, "meshtastic.receive")
+
+if __name__ == '__main__':
+    print("Starting presto bridge...")
+    app.run(host='0.0.0.0', port=5050, threaded=True)
