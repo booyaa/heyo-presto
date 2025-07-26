@@ -13,8 +13,8 @@ messages = []
 @app.route("/status", methods=['GET'])
 def status():
     try:
-        status = interface.status()
-        return {"status": "success", "message": f"interface: {status} - {messages}"}
+        status = interface.showInfo()
+        return {"status": "success", "message": f"interface: {status}\n{messages}"}
     except Exception as e:
         print(f"Error getting status: {e}")
         return {"status": "error", "message": str(e)}
