@@ -22,6 +22,7 @@ def send_message(message):
 
 @app.route("/get/message", methods=['GET'])
 def get_message():
+    print(f"DEBUG|before: {messages}")
     if messages:
         return {"status": "success", "message": messages.pop(0)}
     else:
@@ -29,6 +30,7 @@ def get_message():
     
 def on_receive(packet, interface):
     try:
+        print(f"DEBUG|before: {messages}")
         if packet.get('decoded', {}).get('portnum') == 'TEXT_MESSAGE_APP':
             raw_text = packet['decoded']['text']
             if raw_text.lower().startswith('presto'):
@@ -36,6 +38,7 @@ def on_receive(packet, interface):
                 messages.append(truncate_message(clean_up_message(raw_text)))
             else:
                 print(f"DEBUG|Ignored: {raw_text}")
+        print(f"DEBUG|after: {messages}")
     except Exception as e:
         print(f"Error processing packet: {e}")
 
