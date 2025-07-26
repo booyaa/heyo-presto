@@ -3,9 +3,9 @@
 # DESC Meshtastic Console
 from presto import Presto
 from touch import Button
-import urequests as requests
+# import urequests as requests
+import requests
 from time import sleep
-import time
 
 HOST_BASE_URL = 'http://192.168.1.205:5050'
 
@@ -104,16 +104,22 @@ while True:
                 print(f"calling {HOST_BASE_URL}/send/presto+ping")
                 r = requests.post(f"{HOST_BASE_URL}/send/presto+ping", timeout=1)
                 elapsed = time.ticks_diff(time.ticks_ms(), start_time)
+                print(f"request elapsed time: {elapsed} ms")
                 if r.status_code == 200:
-                    display.text(f"Sent ping! ({elapsed}ms)", feedback_x, feedback_y)
+                    display.text(f"Sent ping!", feedback_x, feedback_y)
                     sent_fired=1
                 else: 
-                    display.text(f"Failed to send ping! ({elapsed}ms)", feedback_x, feedback_y)
+                    print(f"parse this: {r.json()}")
+                    display.text(f"Failed to send ping! {message}", feedback_x, feedback_y)
                     print(f"Non 200 error: {r.text}")
-                print(f"Request took {elapsed}ms")
+                    print("Sent ping!")
             except Exception as e:
-                print(f"Error posting: {e}")
-            print("Sent ping!")
+                if "time" in str(e).lower():
+                    display.text(f"Error: Timeout!", feedback_x, feedback_y)
+                    print(f"Timeout error: {e}")
+                else:
+                    display.text(f"Error: Enable debug mode!", feedback_x, feedback_y)
+                    print(f"Error posting: {e}")
         read_fired=0
     else:
         display.set_pen(RED)
