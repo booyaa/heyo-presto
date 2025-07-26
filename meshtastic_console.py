@@ -5,7 +5,7 @@ from presto import Presto
 from touch import Button
 # import urequests as requests
 import requests
-from time import sleep
+from time import sleep, time
 
 HOST_BASE_URL = 'http://192.168.1.205:5050'
 
