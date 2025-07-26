@@ -33,7 +33,7 @@ button_2 = Button(70, 155, BUTTON_WIDTH, BUTTON_HEIGHT)
 button_3 = Button(130, 155, BUTTON_WIDTH, BUTTON_HEIGHT)
 
 feedback_x = 2
-feedback_y = 35
+feedback_y = 40
 
 ###
 hue = 0.90
@@ -167,4 +167,4 @@ while True:
     # Finally, we update the screen so we can see our changes!
     presto.update()
 
-    sleep(1)
+    sleep(0.25)
