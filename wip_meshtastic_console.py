@@ -62,8 +62,9 @@ except ImportError as e:
         show_message(e)
 ####
 
-sent_fired=0
-read_fired=0
+messages = ["hello", "world", "this is a test message", "another message", "and another one"]
+sent_fired = 0
+read_fired = 0
 while True:
 
     # Check for touch changes
@@ -87,23 +88,28 @@ while True:
     # Finding the state of a touch button is much the same as a physical button
     # calling '.is_pressed()' on your button object will return True or False
     if button_1.is_pressed():
+        print("button 1 pressed")
         display.set_pen(GREEN)
         if sent_fired == 1:
             print("Already sent ping, ignoring...")
-            sleep(5)
             display.text("Already sent ping!", feedback_x, feedback_y)
         else:
-            try:
-                r = requests.post(f"{HOST_BASE_URL}/send/presto+ping")
-                if r.status_code == 200:
-                    display.text("Sent ping!", feedback_x, feedback_y)
-                    sleep(5)
-                    sent_fired=1
-                else: 
-                    display.text("Failed to send ping!", feedback_x, feedback_y)
-                    print(f"Non 200 error: {r.text}")
-            except Exception as e:
-                print(f"Error posting: {e}")
+            # try:
+            #     print(f"calling {HOST_BASE_URL}/send/presto+ping")
+            #     r = requests.post(f"{HOST_BASE_URL}/send/presto+ping")
+            #     if r.status_code == 200:
+            #         display.text("Sent ping!", feedback_x, feedback_y)
+            #         sent_fired=1
+            #     else: 
+            #         display.text("Failed to send ping!", feedback_x, feedback_y)
+            #         print(f"Non 200 error: {r.text}")
+            # except Exception as e:
+            #     print(f"Error posting: {e}")
+            ###debug start####
+            display.text("Sent ping!", feedback_x, feedback_y)
+            sent_fired=1
+            ###debug end####
+            print("Sent ping!")
         read_fired=0
     else:
         display.set_pen(RED)
@@ -113,24 +119,34 @@ while True:
 
     ## read messages is noticably janky, need to fix the on-screen feedback
     if button_2.is_pressed():
+        print("button 2 pressed")
         display.set_pen(GREEN)
         if read_fired == 1:
-            print("Already read message, ignoring...")
-            display.text("Press reset to read more!", feedback_x, feedback_y)
-            sleep(5)
+            # print("Already read message, ignoring...")
+            # display.text("Press reset to read more!", feedback_x, feedback_y)
+            print(f"Redisplaying last message: {message}")
+            display.text(message, feedback_x, feedback_y)
         else:
             try:
-                r = requests.get(f"{HOST_BASE_URL}/get/message")
-                if r.status_code == 200:
-                    message = r.json().get('message')
+                message = messages.pop(0) if messages else None
+                if message:
                     display.text(message, feedback_x, feedback_y)
                     print(message)
-                    sleep(5)
-                    read_fired=1
-                else: 
-                    display.text("Failed to read messages!", feedback_x, feedback_y)
-                    sleep(5)
-                    print(f"Non-200 error or empty: {r.text}")
+                else:
+                    message = "No more messages!"
+                    display.text(message, feedback_x, feedback_y)
+                    print(f"Non-200 error or empty: {message}")
+                read_fired=1
+                # print(f"calling {HOST_BASE_URL}/get/message")
+                # r = requests.get(f"{HOST_BASE_URL}/get/message")
+                # if r.status_code == 200:
+                #     message = r.json().get('message')
+                #     display.text(message, feedback_x, feedback_y)
+                #     print(message)
+                #     read_fired=1
+                # else: 
+                #     display.text("Failed to read messages!", feedback_x, feedback_y)
+                #     print(f"Non-200 error or empty: {r.text}")
             except Exception as e:
                 print(f"Error posting: {e}")
         sent_fired=0
@@ -139,6 +155,7 @@ while True:
     display.rectangle(*button_2.bounds)
 
     if button_3.is_pressed():
+        print("button 3 pressed")
         display.set_pen(GREEN)
         display.text("Resetting!", feedback_x, feedback_y)
         sent_fired=0
@@ -150,3 +167,4 @@ while True:
     # Finally, we update the screen so we can see our changes!
     presto.update()
 
+    sleep(1)
