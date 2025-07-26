@@ -10,6 +10,20 @@ meshtastic_default_sender = os.getenv('MESHTASTIC_DEFAULT_SENDER')
 interface = tcp_interface.TCPInterface(hostname=meshtastic_node_host)
 messages = []
 
+@app.route("/status", methods=['GET'])
+def status():
+    try:
+        status = interface.status()
+        return {"status": "success", "message": f"interface: {status} - {messages}"}
+    except Exception as e:
+        print(f"Error getting status: {e}")
+        return {"status": "error", "message": str(e)}
+
+@app.route("/sideload/<message>", methods=['POST'])
+def sideload_message(message):
+    messages.append(message)
+    return {"status": "success", "message": "message side loaded"}
+
 @app.route("/send/<message>", methods=['POST'])
 def send_message(message):
     try:
@@ -22,7 +36,7 @@ def send_message(message):
 
 @app.route("/get/message", methods=['GET'])
 def get_message():
-    print(f"DEBUG|before: {messages}")
+    print(f"DEBUG|get msg before: {messages}")
     if messages:
         return {"status": "success", "message": messages.pop(0)}
     else:
@@ -30,7 +44,7 @@ def get_message():
     
 def on_receive(packet, interface):
     try:
-        print(f"DEBUG|before: {messages}")
+        print(f"DEBUG|before on_recv: {messages}")
         if packet.get('decoded', {}).get('portnum') == 'TEXT_MESSAGE_APP':
             raw_text = packet['decoded']['text']
             if raw_text.lower().startswith('presto'):
@@ -38,7 +52,7 @@ def on_receive(packet, interface):
                 messages.append(truncate_message(clean_up_message(raw_text)))
             else:
                 print(f"DEBUG|Ignored: {raw_text}")
-        print(f"DEBUG|after: {messages}")
+        print(f"DEBUG|after on_recv: {messages}")
     except Exception as e:
         print(f"Error processing packet: {e}")
 
