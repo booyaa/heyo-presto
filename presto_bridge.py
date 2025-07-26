@@ -1,4 +1,5 @@
 import os
+from time import sleep
 from flask import Flask
 from meshtastic import tcp_interface
 from pubsub import pub
@@ -28,6 +29,7 @@ def sideload_message(message):
 def send_message(message):
     try:
         interface.sendText(message, destinationId=meshtastic_default_sender)
+        sleep(2) # trigger timeout
     except Exception as e:
         print(f"Error sending message: {e}")
         return {"status": "error", "message": str(e)}
