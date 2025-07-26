@@ -5,6 +5,7 @@ from presto import Presto
 from touch import Button
 import urequests as requests
 from time import sleep
+import time
 
 HOST_BASE_URL = 'http://192.168.1.205:5050'
 
@@ -94,21 +95,20 @@ while True:
             print("Already sent ping, ignoring...")
             display.text("Already sent ping!", feedback_x, feedback_y)
         else:
-            # try:
-            #     print(f"calling {HOST_BASE_URL}/send/presto+ping")
-            #     r = requests.post(f"{HOST_BASE_URL}/send/presto+ping")
-            #     if r.status_code == 200:
-            #         display.text("Sent ping!", feedback_x, feedback_y)
-            #         sent_fired=1
-            #     else: 
-            #         display.text("Failed to send ping!", feedback_x, feedback_y)
-            #         print(f"Non 200 error: {r.text}")
-            # except Exception as e:
-            #     print(f"Error posting: {e}")
-            ###debug start####
-            display.text("Sent ping!", feedback_x, feedback_y)
-            sent_fired=1
-            ###debug end####
+            try:
+                start_time = time.ticks_ms()
+                print(f"calling {HOST_BASE_URL}/send/presto+ping")
+                r = requests.post(f"{HOST_BASE_URL}/send/presto+ping")
+                elapsed = time.ticks_diff(time.ticks_ms(), start_time)
+                if r.status_code == 200:
+                    display.text(f"Sent ping! ({elapsed}ms)", feedback_x, feedback_y)
+                    sent_fired=1
+                else: 
+                    display.text(f"Failed to send ping! ({elapsed}ms)", feedback_x, feedback_y)
+                    print(f"Non 200 error: {r.text}")
+                print(f"Request took {elapsed}ms")
+            except Exception as e:
+                print(f"Error posting: {e}")
             print("Sent ping!")
         read_fired=0
     else:
@@ -117,36 +117,24 @@ while True:
     # We can use the '.bounds' property of our Button object to set the X, Y, WIDTH and HEIGHT
     display.rectangle(*button_1.bounds)
 
-    ## read messages is noticably janky, need to fix the on-screen feedback
     if button_2.is_pressed():
         print("button 2 pressed")
         display.set_pen(GREEN)
         if read_fired == 1:
-            # print("Already read message, ignoring...")
-            # display.text("Press reset to read more!", feedback_x, feedback_y)
             print(f"Redisplaying last message: {message}")
             display.text(message, feedback_x, feedback_y)
         else:
             try:
-                message = messages.pop(0) if messages else None
-                if message:
+                print(f"calling {HOST_BASE_URL}/get/message")
+                r = requests.get(f"{HOST_BASE_URL}/get/message")
+                if r.status_code == 200:
+                    message = r.json().get('message')
                     display.text(message, feedback_x, feedback_y)
                     print(message)
-                else:
-                    message = "No more messages!"
-                    display.text(message, feedback_x, feedback_y)
-                    print(f"Non-200 error or empty: {message}")
-                read_fired=1
-                # print(f"calling {HOST_BASE_URL}/get/message")
-                # r = requests.get(f"{HOST_BASE_URL}/get/message")
-                # if r.status_code == 200:
-                #     message = r.json().get('message')
-                #     display.text(message, feedback_x, feedback_y)
-                #     print(message)
-                #     read_fired=1
-                # else: 
-                #     display.text("Failed to read messages!", feedback_x, feedback_y)
-                #     print(f"Non-200 error or empty: {r.text}")
+                    read_fired=1
+                else: 
+                    display.text("Failed to read messages!", feedback_x, feedback_y)
+                    print(f"Non-200 error or empty: {r.text}")
             except Exception as e:
                 print(f"Error posting: {e}")
         sent_fired=0
