@@ -66,6 +66,10 @@ except ImportError as e:
 messages = ["hello", "world", "this is a test message", "another message", "and another one"]
 sent_fired = 0
 read_fired = 0
+
+# FIXME: we should be able to toggle
+presto.set_backlight(0.1)
+
 while True:
 
     # Check for touch changes
@@ -98,7 +102,7 @@ while True:
             try:
                 start_time = time.ticks_ms()
                 print(f"calling {HOST_BASE_URL}/send/presto+ping")
-                r = requests.post(f"{HOST_BASE_URL}/send/presto+ping")
+                r = requests.post(f"{HOST_BASE_URL}/send/presto+ping", timeout=1)
                 elapsed = time.ticks_diff(time.ticks_ms(), start_time)
                 if r.status_code == 200:
                     display.text(f"Sent ping! ({elapsed}ms)", feedback_x, feedback_y)
