@@ -29,7 +29,6 @@ def sideload_message(message):
 def send_message(message):
     try:
         interface.sendText(message, destinationId=meshtastic_default_sender)
-        sleep(2) # trigger timeout
     except Exception as e:
         print(f"Error sending message: {e}")
         return {"status": "error", "message": str(e)}
