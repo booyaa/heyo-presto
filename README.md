@@ -15,9 +15,9 @@ export MESHTASTIC_DEFAULT_SENDER='!deadbeef' # user id
 flask --debug --app presto_bridge run --port 5050 --host 0.0.0.0                                                
 ```
 
-### (WIP) Meshtastic console
+### Meshtastic console
 
-code [wip_meshtastic_console.py](./wip_meshtastic_console.py)
+code [meshtastic_console.py](./meshtastic_console.py)
 
 This is a Presto app that allows you to send and receive messages from 
 meshtastic. It requires the Presto bridge to work.
