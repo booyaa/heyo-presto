@@ -32,7 +32,7 @@ button_1 = Button(10, 155, BUTTON_WIDTH, BUTTON_HEIGHT)
 button_2 = Button(70, 155, BUTTON_WIDTH, BUTTON_HEIGHT)
 button_3 = Button(130, 155, BUTTON_WIDTH, BUTTON_HEIGHT)
 
-feedback_x = 10
+feedback_x = 2
 feedback_y = 35
 
 ###
