@@ -4,7 +4,6 @@ from flask import Flask
 from meshtastic import tcp_interface
 from pubsub import pub
 
-
 app = Flask(__name__)
 meshtastic_node_host = os.getenv('MESHTASTIC_HOST', 'meshtastic.local')
 meshtastic_default_sender = os.getenv('MESHTASTIC_DEFAULT_SENDER')
@@ -45,15 +44,15 @@ def get_message():
     
 def on_receive(packet, interface):
     try:
-        print(f"DEBUG|before on_recv: {messages}")
         if packet.get('decoded', {}).get('portnum') == 'TEXT_MESSAGE_APP':
+            print(f"DEBUG|before on_recv: {messages}")
             raw_text = packet['decoded']['text']
             if raw_text.lower().startswith('presto'):
                 print(f"DEBUG|{packet['decoded']['text']}")
                 messages.append(truncate_message(clean_up_message(raw_text)))
             else:
                 print(f"DEBUG|Ignored: {raw_text}")
-        print(f"DEBUG|after on_recv: {messages}")
+            print(f"DEBUG|after on_recv: {messages}")
     except Exception as e:
         print(f"Error processing packet: {e}")
 
