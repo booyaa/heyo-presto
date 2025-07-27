@@ -3,6 +3,8 @@ from time import sleep
 from flask import Flask
 from meshtastic import tcp_interface
 from pubsub import pub
+import logging
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 meshtastic_node_host = os.getenv('MESHTASTIC_HOST', 'meshtastic.local')
@@ -14,7 +16,7 @@ messages = []
 def status():
     try:
         my_node_info = interface.getMyNodeInfo()
-        print(f"DEBUG| messages: {messages}")
+        print(f"DEBUG|/status messages: {messages}")
         return {"status": "success", "message": f"interface: {my_node_info['user']['longName']} / battery: {my_node_info['deviceMetrics']['batteryLevel']}% / {len(messages)} messages"}
     except Exception as e:
         print(f"Error getting status: {e}")
@@ -77,5 +79,6 @@ pub.subscribe(on_receive, "meshtastic.receive")
 pub.subscribe(on_connection, "meshtastic.connection.established")
 
 if __name__ == '__main__':
-    print("Starting presto bridge...")
+    # logging.basicConfig(level=logging.DEBUG)
+    app.logger.info("Starting presto bridge...")
     app.run(host='0.0.0.0', port=5050) #, threaded=True)
