@@ -10,12 +10,12 @@ app = Flask(__name__)
 meshtastic_node_host = os.getenv('MESHTASTIC_HOST', 'meshtastic.local')
 meshtastic_default_sender = os.getenv('MESHTASTIC_DEFAULT_SENDER')
 interface = tcp_interface.TCPInterface(hostname=meshtastic_node_host)
+my_node_info = interface.getMyNodeInfo()
 messages = []
 
 @app.route("/debug/status", methods=['GET'])
 def status():
     try:
-        my_node_info = interface.getMyNodeInfo()
         app.logger.debug(f"{request.path} messages: {messages}")
         return {"status": "success", "message": f"interface: {my_node_info['user']['longName']} / battery: {my_node_info['deviceMetrics']['batteryLevel']}% / {len(messages)} messages"}
     except Exception as e:
@@ -61,7 +61,7 @@ def on_receive(packet, interface):
         app.logger.error(f"on_recv error processing packet: {e}")
 
 def on_connection(interface, topic=pub.AUTO_TOPIC): # called when we (re)connect to the radio
-    app.logger.info("Connected to node")
+    app.logger.info(f"Connected to {my_node_info['user']['longName']}")
 
 def clean_up_message(message):
     if message.lower().startswith('presto'):
