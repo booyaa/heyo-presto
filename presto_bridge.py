@@ -13,7 +13,7 @@ messages = []
 @app.route("/debug/status", methods=['GET'])
 def status():
     try:
-        interface.showInfo()
+        print(interface.getMyNodeInfo())
         return {"status": "success", "message": f"interface: ok / {len(messages)} messages"}
     except Exception as e:
         print(f"Error getting status: {e}")
@@ -57,6 +57,9 @@ def on_receive(packet, interface):
     except Exception as e:
         print(f"Error processing packet: {e}")
 
+def on_connection(interface, topic=pub.AUTO_TOPIC): # called when we (re)connect to the radio
+    print(f"Connected to node")
+
 def clean_up_message(message):
     if message.lower().startswith('presto'):
         message = message[6:].strip()
@@ -70,6 +73,7 @@ def truncate_message(message):
     return message
 
 pub.subscribe(on_receive, "meshtastic.receive")
+pub.subscribe(on_connection, "meshtastic.connection.established")
 
 if __name__ == '__main__':
     print("Starting presto bridge...")
