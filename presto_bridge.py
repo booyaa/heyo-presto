@@ -20,8 +20,9 @@ def status():
         return {"status": "error", "message": str(e)}
 
 @app.route("/debug/sideload", methods=['POST'])
-def sideload_message():
-    messages.append(["test message", "hello there", "this message is truncated"])
+def sideload_messages():
+    messages.extend(["test message", "hello there", "this message is truncated"])
+    print(f"DEBUG|sideloaded messages: {messages}")
     return {"status": "success", "message": "messages side loaded"}
 
 @app.route("/send/<message>", methods=['POST'])
