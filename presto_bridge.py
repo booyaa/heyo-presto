@@ -13,8 +13,9 @@ messages = []
 @app.route("/debug/status", methods=['GET'])
 def status():
     try:
-        print(interface.getMyNodeInfo())
-        return {"status": "success", "message": f"interface: ok / {len(messages)} messages"}
+        my_node_info = interface.getMyNodeInfo()
+        print(my_node_info)
+        return {"status": "success", "message": f"interface: {my_node_info['user']['longName']} / battery: {my_node_info['deviceMetrics']['batteryLevel']}% / {len(messages)} messages"}
     except Exception as e:
         print(f"Error getting status: {e}")
         return {"status": "error", "message": str(e)}
