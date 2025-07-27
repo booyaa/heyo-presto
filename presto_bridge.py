@@ -11,19 +11,19 @@ meshtastic_default_sender = os.getenv('MESHTASTIC_DEFAULT_SENDER')
 interface = tcp_interface.TCPInterface(hostname=meshtastic_node_host)
 messages = []
 
-@app.route("/status", methods=['GET'])
+@app.route("/debug/status", methods=['GET'])
 def status():
     try:
         interface.showInfo()
-        return {"status": "success", "message": f"interface: ok\n{messages}"}
+        return {"status": "success", "message": f"interface: ok / {len(messages)} messages"}
     except Exception as e:
         print(f"Error getting status: {e}")
         return {"status": "error", "message": str(e)}
 
-@app.route("/sideload/<message>", methods=['POST'])
+@app.route("/debug/sideload", methods=['POST'])
 def sideload_message(message):
-    messages.append(message)
-    return {"status": "success", "message": "message side loaded"}
+    messages.append(["test message", "hello there", "this message is truncated"])
+    return {"status": "success", "message": "messages side loaded"}
 
 @app.route("/send/<message>", methods=['POST'])
 def send_message(message):
