@@ -1,11 +1,9 @@
 import os
 from time import sleep
-from flask import Flask
+from flask import Flask, request
 from meshtastic import tcp_interface
 from pubsub import pub
 import logging
-
-from requests import request
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
