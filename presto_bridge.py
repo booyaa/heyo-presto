@@ -19,13 +19,13 @@ def status():
         app.logger.debug(f"{request.path} messages: {messages}")
         return {"status": "success", "message": f"interface: {my_node_info['user']['longName']} / battery: {my_node_info['deviceMetrics']['batteryLevel']}% / {len(messages)} messages"}
     except Exception as e:
-        print(f"Error getting status: {e}")
+        app.logger.error(f"{request.path} error getting status: {e}")
         return {"status": "error", "message": str(e)}
 
 @app.route("/debug/sideload", methods=['POST'])
 def sideload_messages():
     messages.extend(["test message", "hello there", "this message is truncated"])
-    print(f"DEBUG|sideloaded messages: {messages}")
+    app.logger.debug(f"{request.path} sideloaded messages: {messages}")
     return {"status": "success", "message": "messages side loaded"}
 
 @app.route("/send/<message>", methods=['POST'])
@@ -33,14 +33,14 @@ def send_message(message):
     try:
         interface.sendText(message, destinationId=meshtastic_default_sender)
     except Exception as e:
-        print(f"Error sending message: {e}")
+        app.logger.error(f"{request.path} error sending message: {e}")
         return {"status": "error", "message": str(e)}
     
     return {"status": "success", "message": message}
 
 @app.route("/get/message", methods=['GET'])
 def get_message():
-    print(f"DEBUG|get msg before: {messages}")
+    app.logger.debug(f"{request.path} before: {messages}")
     if messages:
         return {"status": "success", "message": messages.pop(0)}
     else:
@@ -49,19 +49,19 @@ def get_message():
 def on_receive(packet, interface):
     try:
         if packet.get('decoded', {}).get('portnum') == 'TEXT_MESSAGE_APP':
-            print(f"DEBUG|before on_recv: {messages}")
+            app.logger.debug(f"on_recv before: {messages}")
             raw_text = packet['decoded']['text']
             if raw_text.lower().startswith('presto'):
-                print(f"DEBUG|{packet['decoded']['text']}")
+                app.logger.debug(f"on_recv raw message: {packet['decoded']['text']}")
                 messages.append(truncate_message(clean_up_message(raw_text)))
             else:
-                print(f"DEBUG|Ignored: {raw_text}")
-            print(f"DEBUG|after on_recv: {messages}")
+                app.logger.debug(f"on_recv ignored: {raw_text}")
+            app.logger.debug(f"on_recv after: {messages}")
     except Exception as e:
-        print(f"Error processing packet: {e}")
+        app.logger.error(f"on_recv error processing packet: {e}")
 
 def on_connection(interface, topic=pub.AUTO_TOPIC): # called when we (re)connect to the radio
-    print(f"Connected to node")
+    app.logger.info("Connected to node")
 
 def clean_up_message(message):
     if message.lower().startswith('presto'):
