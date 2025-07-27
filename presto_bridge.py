@@ -4,6 +4,8 @@ from flask import Flask
 from meshtastic import tcp_interface
 from pubsub import pub
 import logging
+
+from requests import request
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
@@ -16,8 +18,7 @@ messages = []
 def status():
     try:
         my_node_info = interface.getMyNodeInfo()
-        print(f"DEBUG|/status messages: {messages}")
-        app.logger.debug(f"/status messages: {messages}")
+        app.logger.debug(f"{request.path} messages: {messages}")
         return {"status": "success", "message": f"interface: {my_node_info['user']['longName']} / battery: {my_node_info['deviceMetrics']['batteryLevel']}% / {len(messages)} messages"}
     except Exception as e:
         print(f"Error getting status: {e}")
