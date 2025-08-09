@@ -5,14 +5,15 @@
 import time
 from presto import Presto
 import machine
+import gc
 
 # Setup for the Presto display
 presto = Presto()
 presto.set_backlight(0)
 
 print("Entering sleep mode...")
-
+gc.collect()  # Run garbage collection to free up memory
 while True:
-    time.sleep(3600)
+    time.sleep(1)
     machine.idle()
     machine.lightsleep(3600000)  # Sleep for 1 hour

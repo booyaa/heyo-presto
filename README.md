@@ -2,6 +2,12 @@
 
 ## Scripts
 
+### Sleeper
+
+code: [sleeper.py](./sleeper.py)
+
+A very poor attempt at power saving. It works by turning the backlight off and goes into a loop that runs between idle/light sleep. Copy this to your presto and pick it from the launcher. I've not measure how much power draw this is compared to running a regular app. If you're really paranoid you could just unplug the presto.
+
 ### Presto bridge
 
 code: [presto_bridge.py](./presto_bridge.py)
