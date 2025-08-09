@@ -81,5 +81,6 @@ Source: [pimoroni](https://learn.pimoroni.com/article/getting-started-with-prest
 
 ```sh
 # Piano codepoint is e521
-python examples-from-others/font2picovector.py --font examples-from-others/MaterialSymbolsOutlined-Regular.ttf --size 40x40 e521
+cd examples-from-others
+python font2picovector.py --font MaterialSymbolsOutlined-Regular.ttf --size 40x40 e521
 ```
