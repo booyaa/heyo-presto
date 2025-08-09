@@ -10,10 +10,16 @@ import gc
 # Setup for the Presto display
 presto = Presto()
 presto.set_backlight(0)
+presto.auto_ambient_leds(False)
+presto.set_led_hsv(0, 0, 0, 0)
+presto.set_led_rgb(0, 0, 0, 0)
+
 
 print("Entering sleep mode...")
 gc.collect()  # Run garbage collection to free up memory
 while True:
+    print("waking up...")
     time.sleep(1)
     machine.idle()
+    print("going to sleep...")
     machine.lightsleep(3600000)  # Sleep for 1 hour
