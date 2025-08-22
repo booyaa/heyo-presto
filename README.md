@@ -2,6 +2,15 @@
 
 ## Scripts
 
+### Display web image
+
+code: [display-web-image.py](./display-web-image.py)
+
+How to display an image from the internet without saving.
+
+> [!WARNING]
+> The image needs to be small enough to load into RAM
+
 ### Sleeper
 
 code: [sleeper.py](./sleeper.py)
