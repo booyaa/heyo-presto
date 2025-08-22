@@ -31,13 +31,18 @@ meshtastic. It requires the Presto bridge to work.
 Upload it you Presto and change the `HOST_BASE_URL` to match the IP address 
 and URI scheme where your Presto bridge is running on.
 
+## Others
+
+- The [tweaked](./tweaked/) folder is where I've taken existing examples and made small changes like backlight.
+- The [examples-from-others](./examples-from-others/) folder is stuff I've found on the internet that I want to keep for reference.
+
 ## Resources
 - [Presto](https://shop.pimoroni.com/products/presto?variant=54894104019323) (shop link)
 - [Thonny](https://thonny.org/) IDE to easily connect to the presto
 - [mpremote](https://docs.micropython.org/en/latest/reference/mpremote.html) when you're ready to hit the terminal
   - [mpr](https://github.com/bulletmark/mpr) - a wrapper around mpremote to use wildcards and cross compiled runs
   
-## Thonny set up
+### Thonny set up
 
 - Make sure your Presto is connected to your computer via the USB data cable that came with the kit
 - Set your interpreter to "MicroPython (Raspberry Pi Pico)" (`Tools > Options > Interpreter tab`)
@@ -46,7 +51,7 @@ and URI scheme where your Presto bridge is running on.
 - You can then use file open and select "Raspberry Pi Pico" to open files on the Presto
 - You can press the Play butto to start programs
 
-## mpremote
+### mpremote
 
 I use [uv](https://docs.astral.sh/uv/) as my all in one python tool. If you don't use uv, you should be able to reuse these commands by removing uv.
 
@@ -64,9 +69,9 @@ mprmote rm :some_file_on_remote_fs.py
 > [!Note]
 > `:` indicates remote file system
 
-## Miscellany tips
+### Miscellany tips
 
-### Convert your square images into 240x240 px. This assumes they're in the directory
+#### Convert your square images into 240x240 px. This assumes they're in the directory
 
 ```sh
 mkdir converted
@@ -74,7 +79,7 @@ ls -tp | xargs -I{} ffmpeg -i {} -vf scale=240:240 "converted/{}"
 mpremote cp converted/. :gallery/
 ```
 
-### Create new icons
+#### Create new icons
 
 Source: [pimoroni](https://learn.pimoroni.com/article/getting-started-with-presto#adding-your-own-examples-to-the-launcher)
 
