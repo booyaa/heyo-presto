@@ -1,6 +1,6 @@
 # how to download images from the web and display them without saving
 import jpegdec
-from urllib import urequest
+import urequests as requests
 from presto import Presto
 
 # Setup for the Presto display
@@ -38,10 +38,9 @@ show_message("Image loading...")
 try:
     # source: https://github.com/pimoroni/pimoroni-pico/blob/main/micropython/examples/pico_inky/placekitten.py#L55
     url = "https://placehold.co/240/jpg" # image must fit in RAM for this to work (try greyscaling and dithering)
-    socket = urequest.urlopen(url)
-    data = bytearray(1024 * 10)
-    socket.readinto(data)
-    socket.close()
+    r = requests.get(url)
+    data = bytearray(r.content)
+    print(f"status: {r.status_code}, type: {type(data)}")
 
     j = jpegdec.JPEG(display)
     j.open_RAM(data)
