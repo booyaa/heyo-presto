@@ -46,6 +46,16 @@ and URI scheme where your Presto bridge is running on.
 - The [examples-from-others](./examples-from-others/) folder is stuff I've found on the internet that I want to keep for reference.
 
 ## Resources
+
+### Reading
+
+- [Shop](https://shop.pimoroni.com/products/presto?variant=54894104019323) - specs of the Presto
+- [Learn](https://learn.pimoroni.com/article/getting-started-with-presto#writing-your-own-code) - the getting started guide for the Presto
+- [Docs](https://github.com/pimoroni/presto/tree/main/docs) - the documentation folder for the Presto code examples
+  - [Pico Graphics](https://github.com/pimoroni/pimoroni-pico/blob/main/micropython/modules/picographics/README.md) - the documentation for the Pico Graphics module. Also contains details of how to use BitBank's [JPEGDEC](https://github.com/bitbank2/JPEGDEC)
+
+### Software / Tools
+
 - [Presto](https://shop.pimoroni.com/products/presto?variant=54894104019323) (shop link)
 - [Thonny](https://thonny.org/) IDE to easily connect to the presto
 - [mpremote](https://docs.micropython.org/en/latest/reference/mpremote.html) when you're ready to hit the terminal
