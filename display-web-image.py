@@ -36,6 +36,7 @@ except ImportError as e:
 show_message("Image loading...")
 
 try:
+    # source: https://github.com/pimoroni/pimoroni-pico/blob/main/micropython/examples/pico_inky/placekitten.py#L55
     url = "https://placehold.co/240/jpg" # image must fit in RAM for this to work (try greyscaling and dithering)
     socket = urequest.urlopen(url)
     data = bytearray(1024 * 10)
