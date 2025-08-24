@@ -2,11 +2,16 @@
 
 ## Scripts
 
-### Scaled Pico Graphic text
+### Scaled text
 
 code: [heyo-presto.py](./heyo-presto.py)
 
-Displays text at varying scale using the 8-bit font.
+Displays text at varying scale using the 8-bit font and Pico Graphics
+
+code: [heyo-vecto.py](./heyo-vecto.py)
+
+Displays text at varying scale using Pico Vectors
+
 
 ### Display web image
 
