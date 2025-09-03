@@ -2,6 +2,40 @@
 
 ## Scripts
 
+### Audio
+
+Starting to experiment with the built in piezo speaker. It's not very powerful, but if you keep the lower frequences and don't try to complicated 
+
+#### Volume control
+
+code: [audio-volume.py](./audio-volume.py)
+
+Using duty cycle to increase volume of simple frequency range. Borrowed heavily from [Sam Galope's][pwmAudioGuideLink] ESP32 PWM audio post.
+
+#### Playing samples badly
+
+code: [audio-samples.py](./audio-samples.py)
+
+This is inspired by antirez (yes of Redis fame)
+
+I grabbed the original wav files from GitHub:
+
+- [R2D2 cheerful][r2d2CheerfulAudio]
+- [Imperial march][imperialMarchAudio]
+
+Converted them to pcm (raw) files using ffmpeg
+
+```sh
+ffmpeg -i some-sound.wav -ar 8000 -acodec pcm_u8 -f u8 some-sound.raw
+```
+
+It took a bit of tinkering to work out how to slow down the samples, but to be honest it felt like guess work. I should probably reread antirez's post.
+
+The samples are very quiet (well on my Presto it sounds quiet on mine).
+
+> ![IMPORTANT]
+> You'll need to copy the raw files over to the Presto using `mpremote cp` even if you use `mpremote run` to run the script locally.
+
 ### Scaled text
 
 code: [heyo-presto.py](./heyo-presto.py)
@@ -125,3 +159,8 @@ Source: [pimoroni](https://learn.pimoroni.com/article/getting-started-with-prest
 cd examples-from-others
 python font2picovector.py --font MaterialSymbolsOutlined-Regular.ttf --size 40x40 e521
 ```
+
+
+[pwmAudioGuideLink]: https://www.samgalope.dev/2025/01/08/pwm-based-audio-generation-with-esp32-a-simple-guide-to-sound-creation/
+[r2d2CheerfulAudio]: https://github.com/CoderDojoTC/robot-media/blob/master/wav-8k/r2d2-cheerful.wav
+[imperialMarchAudio]: https://github.com/CoderDojoTC/robot-media/blob/master/wav-files/imperial_march.wav
