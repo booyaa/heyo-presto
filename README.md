@@ -4,7 +4,7 @@
 
 ### Audio
 
-Starting to experiment with the built in piezo speaker. It's not very powerful, but if you keep the lower frequences and don't try to complicated 
+Starting to experiment with the built in piezo speaker. It's not very powerful, but if you keep the lower frequences and don't try to complicated
 
 #### Volume control
 
@@ -16,7 +16,7 @@ Using duty cycle to increase volume of simple frequency range. Borrowed heavily 
 
 code: [audio-samples.py](./audio-samples.py)
 
-This is inspired by antirez (yes of Redis fame)
+This is inspired by [antirez][antirezPicoAudio] (yes of Redis fame)
 
 I grabbed the original wav files from GitHub:
 
@@ -33,7 +33,7 @@ It took a bit of tinkering to work out how to slow down the samples, but to be h
 
 The samples are very quiet (well on my Presto it sounds quiet on mine).
 
-> ![IMPORTANT]
+> [!IMPORTANT]
 > You'll need to copy the raw files over to the Presto using `mpremote cp` even if you use `mpremote run` to run the script locally.
 
 ### Scaled text
@@ -72,17 +72,17 @@ We only send to a specific person (in my case my mobile node).
 ```sh
 export MESHTASTIC_HOST='1.2.3.4' # IP address of your node
 export MESHTASTIC_DEFAULT_SENDER='!deadbeef' # user id
-flask --debug --app presto_bridge run --port 5050 --host 0.0.0.0                                                
+flask --debug --app presto_bridge run --port 5050 --host 0.0.0.0
 ```
 
 ### Meshtastic console
 
 code [meshtastic_console.py](./meshtastic_console.py)
 
-This is a Presto app that allows you to send and receive messages from 
+This is a Presto app that allows you to send and receive messages from
 meshtastic. It requires the Presto bridge to work.
 
-Upload it you Presto and change the `HOST_BASE_URL` to match the IP address 
+Upload it you Presto and change the `HOST_BASE_URL` to match the IP address
 and URI scheme where your Presto bridge is running on.
 
 ## Others
@@ -105,7 +105,7 @@ and URI scheme where your Presto bridge is running on.
 - [Thonny](https://thonny.org/) IDE to easily connect to the presto
 - [mpremote](https://docs.micropython.org/en/latest/reference/mpremote.html) when you're ready to hit the terminal
   - [mpr](https://github.com/bulletmark/mpr) - a wrapper around mpremote to use wildcards and cross compiled runs
-  
+
 ### Thonny set up
 
 - Make sure your Presto is connected to your computer via the USB data cable that came with the kit
@@ -164,3 +164,4 @@ python font2picovector.py --font MaterialSymbolsOutlined-Regular.ttf --size 40x4
 [pwmAudioGuideLink]: https://www.samgalope.dev/2025/01/08/pwm-based-audio-generation-with-esp32-a-simple-guide-to-sound-creation/
 [r2d2CheerfulAudio]: https://github.com/CoderDojoTC/robot-media/blob/master/wav-8k/r2d2-cheerful.wav
 [imperialMarchAudio]: https://github.com/CoderDojoTC/robot-media/blob/master/wav-files/imperial_march.wav
+[antirezPicoAudio]: https://antirez.com/news/143
